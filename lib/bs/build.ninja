@@ -1,0 +1,72 @@
+g_pkg_flg = -bs-package-name my-blog -bs-ns MyBlog
+src_root_dir = /Users/oscarm/Documents/6monthgrind/smash-hub-reason
+bsc = /Users/oscarm/Documents/6monthgrind/smash-hub-reason/node_modules/bs-platform/lib/bsc.exe
+bsdep = /Users/oscarm/Documents/6monthgrind/smash-hub-reason/node_modules/bs-platform/lib/bsb_helper.exe
+warnings = -w -30-40+6+7+27+32..39+44+45+101
+bsc_flags = -bs-suffix -nostdlib -I '/Users/oscarm/Documents/6monthgrind/smash-hub-reason/node_modules/bs-platform/lib/ocaml' -bs-super-errors -color always
+ppx_flags = 
+g_pkg_incls = -I /Users/oscarm/Documents/6monthgrind/smash-hub-reason/node_modules/reason-react/lib/ocaml -I /Users/oscarm/Documents/6monthgrind/smash-hub-reason/node_modules/bs-css/lib/ocaml
+bs_package_dev_includes = 
+g_ns = -bs-ns MyBlog
+bsb_dir_group = 0
+refmt = /Users/oscarm/Documents/6monthgrind/smash-hub-reason/node_modules/bs-platform/lib/refmt.exe
+reason_react_jsx = -bs-jsx 3
+refmt_flags = --print binary
+g_lib_incls = -I . -I src/components/Page -I src/bindings -I pages
+rule build_ast_and_module_sets_from_re
+  command = $bsc -pp "$refmt $refmt_flags" $reason_react_jsx  $ppx_flags $warnings $bsc_flags -c -o $out -bs-syntax-only -bs-binary-ast -impl $in
+  description = [34mBuilding[39m [2m${out}[22m
+build pages/about.mlast : build_ast_and_module_sets_from_re $src_root_dir/pages/about.re
+rule build_deps
+  command = $bsdep $g_ns -g $bsb_dir_group $in
+  restat = 1
+  description = [34mBuilding[39m [2m${out}[22m
+build pages/about.d : build_deps pages/about.mlast
+rule re_cmj_cmi
+  command = $bsc $g_pkg_flg  -bs-re-out -bs-super-errors $g_pkg_incls $g_lib_incls $bsc_extra_includes $warnings $bsc_flags $gentypeconfig -o $out -c  $in $postbuild
+  dyndep = $in_e.d
+  restat = 1
+  description = [34mBuilding[39m [2m${out}[22m
+build pages/about-MyBlog.cmj |  $src_root_dir/pages/about.bs.js pages/about-MyBlog.cmi : re_cmj_cmi pages/about.mlast ||  pages/about.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:pages
+build pages/index.mlast : build_ast_and_module_sets_from_re $src_root_dir/pages/index.re
+build pages/index.d : build_deps pages/index.mlast
+build pages/index-MyBlog.cmj |  $src_root_dir/pages/index.bs.js pages/index-MyBlog.cmi : re_cmj_cmi pages/index.mlast ||  pages/index.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:pages
+build pages/login.mlast : build_ast_and_module_sets_from_re $src_root_dir/pages/login.re
+build pages/login.d : build_deps pages/login.mlast
+build pages/login-MyBlog.cmj |  $src_root_dir/pages/login.bs.js pages/login-MyBlog.cmi : re_cmj_cmi pages/login.mlast ||  pages/login.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:pages
+build pages/contact.mlast : build_ast_and_module_sets_from_re $src_root_dir/pages/contact.re
+build pages/contact.d : build_deps pages/contact.mlast
+build pages/contact-MyBlog.cmj |  $src_root_dir/pages/contact.bs.js pages/contact-MyBlog.cmi : re_cmj_cmi pages/contact.mlast ||  pages/contact.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:pages
+build src/bindings/Next.mlast : build_ast_and_module_sets_from_re $src_root_dir/src/bindings/Next.re
+build src/bindings/Next.d : build_deps src/bindings/Next.mlast
+build src/bindings/Next-MyBlog.cmj |  $src_root_dir/src/bindings/Next.bs.js src/bindings/Next-MyBlog.cmi : re_cmj_cmi src/bindings/Next.mlast ||  src/bindings/Next.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:src/bindings
+build src/components/Page/Page.mlast : build_ast_and_module_sets_from_re $src_root_dir/src/components/Page/Page.re
+build src/components/Page/Page.d : build_deps src/components/Page/Page.mlast
+build src/components/Page/Page-MyBlog.cmj |  $src_root_dir/src/components/Page/Page.bs.js src/components/Page/Page-MyBlog.cmi : re_cmj_cmi src/components/Page/Page.mlast ||  src/components/Page/Page.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:src/components/Page
+build src/components/Page/Footer.mlast : build_ast_and_module_sets_from_re $src_root_dir/src/components/Page/Footer.re
+build src/components/Page/Footer.d : build_deps src/components/Page/Footer.mlast
+build src/components/Page/Footer-MyBlog.cmj |  $src_root_dir/src/components/Page/Footer.bs.js src/components/Page/Footer-MyBlog.cmi : re_cmj_cmi src/components/Page/Footer.mlast ||  src/components/Page/Footer.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:src/components/Page
+build src/components/Page/Navbar.mlast : build_ast_and_module_sets_from_re $src_root_dir/src/components/Page/Navbar.re
+build src/components/Page/Navbar.d : build_deps src/components/Page/Navbar.mlast
+build src/components/Page/Navbar-MyBlog.cmj |  $src_root_dir/src/components/Page/Navbar.bs.js src/components/Page/Navbar-MyBlog.cmi : re_cmj_cmi src/components/Page/Navbar.mlast ||  src/components/Page/Navbar.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:src/components/Page
+build src/components/Page/Section.mlast : build_ast_and_module_sets_from_re $src_root_dir/src/components/Page/Section.re
+build src/components/Page/Section.d : build_deps src/components/Page/Section.mlast
+build src/components/Page/Section-MyBlog.cmj |  $src_root_dir/src/components/Page/Section.bs.js src/components/Page/Section-MyBlog.cmi : re_cmj_cmi src/components/Page/Section.mlast ||  src/components/Page/Section.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:src/components/Page
+build src/components/Page/NavbarStyles.mlast : build_ast_and_module_sets_from_re $src_root_dir/src/components/Page/NavbarStyles.re
+build src/components/Page/NavbarStyles.d : build_deps src/components/Page/NavbarStyles.mlast
+build src/components/Page/NavbarStyles-MyBlog.cmj |  $src_root_dir/src/components/Page/NavbarStyles.bs.js src/components/Page/NavbarStyles-MyBlog.cmi : re_cmj_cmi src/components/Page/NavbarStyles.mlast ||  src/components/Page/NavbarStyles.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:src/components/Page
+rule build_package
+  command = $bsc -w -49 -no-alias-deps -bs-cmi-only -c $in
+  restat = 1
+  description = [34mBuilding[39m [2m${out}[22m
+build MyBlog.cmi : build_package MyBlog.mlmap
